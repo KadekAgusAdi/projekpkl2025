@@ -16,6 +16,7 @@
             <p>{{ $product->description }}</p>
             <h4>Rp {{ number_format($product->price, 0, ',', '.') }}</h4>
             <a href="{{ route('checkout', $product->id) }}" class="btn btn-success">Beli Sekarang</a>
+
         </div>
     </div>
 </div>

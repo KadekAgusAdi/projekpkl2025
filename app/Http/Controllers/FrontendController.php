@@ -50,22 +50,16 @@ class FrontendController extends Controller
     }
 
     // Halaman keranjang
-    public function keranjang()
+    public function cart()
     {
-        return view('keranjang');
+        return view('cart');
     }
 
     // Halaman checkout
     public function checkout($id)
     {
-        // Dummy data
-        $product = (object) [
-            'id' => $id,
-            'name' => 'Nasi Goreng Spesial',
-            'price' => 25000
-        ];
-
-        return view('checkout', compact('product'));
+        $product = Product::findOrFail($id);
+        return view('frontend.checkout', compact('product'));
     }
 
 }
