@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('/keranjang') }}">Keranjang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url('/cart') }}">Keranjang</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('/checkout') }}">Checkout</a></li>
                 </ul>
             </div>

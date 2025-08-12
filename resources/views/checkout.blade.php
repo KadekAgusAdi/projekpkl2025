@@ -12,8 +12,10 @@
         <h4>{{ $product->name }}</h4>
         <p>Rp {{ number_format($product->price, 0, ',', '.') }}</p>
 
-        <form action="{{ route('payment.process') }}" method="POST">
+        <form action="{{ route('checkout.process') }}" method="POST">
             @csrf
+            <input type="hidden" name="product_id" value="{{ $product->id }}">
+            
             <div class="mb-3">
                 <label for="payment_method" class="form-label">Metode Pembayaran</label>
                 <select class="form-select" name="payment_method" required>
@@ -27,3 +29,4 @@
 </div>
 </body>
 </html>
+@extends('layouts.app')

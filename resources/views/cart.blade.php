@@ -9,8 +9,12 @@
 <div class="container mt-5">
     <h2>Keranjang Belanja</h2>
 
-    @if(session('cart') && count(session('cart')) > 0)
-        <table class="table table-bordered mt-3">
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(count($cart) > 0)
+        <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Produk</th>
@@ -21,21 +25,15 @@
                 </tr>
             </thead>
             <tbody>
-                @php $grandTotal = 0; @endphp
-                @foreach(session('cart') as $id => $item)
-                    @php 
-                        $total = $item['price'] * $item['quantity']; 
-                        $grandTotal += $total;
-                    @endphp
+                @foreach($cart as $id => $item)
                     <tr>
                         <td>{{ $item['name'] }}</td>
                         <td>Rp {{ number_format($item['price'], 0, ',', '.') }}</td>
                         <td>{{ $item['quantity'] }}</td>
-                        <td>Rp {{ number_format($total, 0, ',', '.') }}</td>
+                        <td>Rp {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }}</td>
                         <td>
-                            <form action="{{ route('cart.remove', $id) }}" method="POST" style="display:inline-block">
+                            <form action="{{ route('cart.remove', $id) }}" method="POST">
                                 @csrf
-                                @method('DELETE')
                                 <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
                             </form>
                         </td>
@@ -44,11 +42,11 @@
             </tbody>
         </table>
 
-        <h4>Total Belanja: Rp {{ number_format($grandTotal, 0, ',', '.') }}</h4>
-
-        <a href="{{ route('checkout', 1) }}" class="btn btn-primary mt-3">Lanjutkan ke Checkout</a>
+        <a href="{{ url('/') }}" class="btn btn-secondary">Lanjut Belanja</a>
+        <a href="{{ route('checkout', array_key_first($cart)) }}" class="btn btn-primary">Checkout</a>
     @else
-        <div class="alert alert-warning mt-3">Keranjang masih kosong.</div>
+        <p>Keranjang masih kosong.</p>
+        <a href="{{ url('/') }}" class="btn btn-primary">Belanja Sekarang</a>
     @endif
 </div>
 </body>
