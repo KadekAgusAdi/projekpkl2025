@@ -3,42 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class FrontendController extends Controller
 {
-    private $products = [
-        1 => [
-            'id' => 1,
-            'name' => 'Kaos Polos Hitam',
-            'price' => 75000,
-            'image' => 'https://via.placeholder.com/200x200.png?text=Kaos+Hitam'
-        ],
-        2 => [
-            'id' => 2,
-            'name' => 'Kemeja Putih',
-            'price' => 125000,
-            'image' => 'https://via.placeholder.com/200x200.png?text=Kemeja+Putih'
-        ],
-        3 => [
-            'id' => 3,
-            'name' => 'Jaket Hoodie',
-            'price' => 150000,
-            'image' => 'https://via.placeholder.com/200x200.png?text=Jaket+Hoodie'
-        ],
-    ];
-
     public function home()
     {
-        $products = $this->products;
+        $products = Product::all();
         return view('home', compact('products'));
     }
 
     public function detail($id)
     {
-        if (!isset($this->products[$id])) {
+        $product = Product::find($id);
+        if (!$product) {
             abort(404);
         }
-        $product = $this->products[$id];
         return view('detail', compact('product'));
     }
 
@@ -50,19 +30,19 @@ class FrontendController extends Controller
 
     public function add($id)
     {
-        if (!isset($this->products[$id])) {
+        $product = Product::find($id);
+        if (!$product) {
             abort(404);
         }
 
-        $product = $this->products[$id];
         $cart = session()->get('cart', []);
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity']++;
         } else {
             $cart[$id] = [
-                'name' => $product['name'],
-                'price' => $product['price'],
+                'name' => $product->name,
+                'price' => $product->price,
                 'quantity' => 1
             ];
         }
@@ -90,17 +70,14 @@ class FrontendController extends Controller
 
     public function processCheckout(Request $request)
     {
-        // Validasi input
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'payment_method' => 'required|string',
         ]);
 
-        // Ambil data produk
         $product = Product::findOrFail($request->product_id);
 
-        // Simulasi proses pembayaran (dummy)
-        return redirect()->route('home')->with('success', 'Pembayaran untuk ' . $product->name . ' berhasil menggunakan ' . strtoupper($request->payment_method));
+        return redirect()->route('home')
+            ->with('success', 'Pembayaran untuk ' . $product->name . ' berhasil menggunakan ' . strtoupper($request->payment_method));
     }
 }
-
