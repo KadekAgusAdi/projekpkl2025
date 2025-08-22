@@ -14,7 +14,12 @@
                         <h5 class="card-title">{{ $product->name }}</h5>
                         <p class="card-text">Rp {{ number_format($product->price, 0, ',', '.') }}</p>
                         <a href="{{ route('produk.detail', $product->id) }}" class="btn btn-primary">Lihat Detail</a>
-                        <a href="{{ route('cart.add', $product->id) }}" class="btn btn-success">+ Keranjang</a>
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-success">
+                                    + Tambah ke Keranjang
+                                    </button>
+                                    </form>
                     </div>
                 </div>
             </div>
