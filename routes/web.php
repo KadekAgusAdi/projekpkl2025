@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/produk/{id}', [FrontendController::class, 'detail'])->name('produk.detail');
@@ -20,4 +21,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/produk', [ProductController::class, 'index'])->name('produk.index');
     Route::post('/produk/store', [ProductController::class, 'store'])->name('produk.store');
     Route::get('/detail/{id}', [ProductController::class, 'show'])->name('produk.show');
+
+
+Route::get('/dashboard-user', [UserController::class, 'dashboard']);
+
 });
+
